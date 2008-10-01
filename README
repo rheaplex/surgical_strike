@@ -7,9 +7,6 @@ Building
 
 To build, run make. You'll need to have the OpenScenGraph libraries installed. 
 
-This project is licensed under GPL 2.1 or Later. Please check the license
-version of Coin3D before releasing modifications under GPl 3+.
-
 
 Running
 -------
@@ -22,6 +19,14 @@ surgical_strike [input file]
 
 surgical_strike [input file] [output file]
   Read input file, write output file
+
+
+Warning
+-------
+
+The dxf and png images included in this project are copyright and/or trademarks
+of their respective rightsholders. They are not covered by the licence of this
+software. Use at your own risk.
 
 
 About This Project
