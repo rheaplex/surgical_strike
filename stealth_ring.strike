@@ -1,0 +1,14 @@
+incoming!
+
+codeword blim
+	manouver 0 18 0
+	roll 0 18 0
+	deliver
+set
+
+// main orders
+	load "Stealth.3dmf"
+	camouflage "MacOS.pict"
+	roll 0 90 0
+	manouver .1 0 0
+	blim 22

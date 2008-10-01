@@ -1,0 +1,32 @@
+incoming!
+
+// A rose...
+
+codeword blim
+	manouver 0 60 0
+	roll 0 60 0
+	deliver
+set
+
+codeword klin
+	camouflage "MacOS.PICT"
+	manouver .02 0 0
+	blim 6
+set
+
+codeword mau
+	manouver 0 40 0
+	roll 0 40 0
+	deliver
+set
+
+codeword stymie
+	camouflage "Win.PICT"
+	manouver 0.04 0 0
+	mau 9
+set
+
+// main
+load "Stealth.3DMF"
+	klin 1
+	stymie 1

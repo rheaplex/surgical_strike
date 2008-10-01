@@ -1,0 +1,80 @@
+Surgical Strike Free Software
+-----------------------------
+
+
+Building
+--------
+
+To build, run make. You'll need to have the OpenScenGraph libraries installed. 
+
+This project is licensed under GPL 2.1 or Later. Please check the license
+version of Coin3D before releasing modifications under GPl 3+.
+
+
+Running
+-------
+
+surgical_strike
+  Read from stdin, write to stdout.
+
+surgical_strike [input file]
+  Read input file, write to stdout
+
+surgical_strike [input file] [output file]
+  Read input file, write output file
+
+
+About This Project
+------------------
+
+"Surgical Strike" was a 1996 art computing project concerned with the social 
+history of art computing. "Surgical Strike Free Software" is a 2008 
+reimplementation of the original project.
+
+Computing has trickled down from military applications through corporations to 
+universities and finally into art practice. This history is present in the 
+language and social assumptions of computing. This culture sits uncomfortably 
+with the culture of art, or at least it should. Surgical Strike depicts these 
+contradictions in the form of ironized computer art in order to make them 
+explicit.
+
+The source materials for Surgical Strike were military jargon, the art of 
+William Latham (due to its status as paradigmatic "computer art" at the time), 
+3D models of stealth aeroplanes, 1990s computer software logos, and verbal 
+descriptions of awkward facts from the history of commercial computing. The 
+swirly structures of stealth bombers replaced the innocent spheres and 
+cylinders of Latham's computational Darwinism with more significant forms. The 
+texturing of these forms with commercial trademarks rather than procedural 
+textures was another level of indexicality. These were then sandwiched between 
+texts describing things the computer industry would rather forget in the 
+background and the source code for the depicted form asserting its primacy and 
+interfering with the unreflective consumption of the image in the foreground.
+
+The composition of the images produced with the original system was probably 
+based, unconsciously, on Art & Language's "Hostages" series. The idea of an 
+indexical computer programming language came, again unconsciously, from PJH 
+Halls at KIAD. The project came to me fully formed as I walked to the CEA at 
+Middlesex University early on the morning that I desperately needed to have a 
+project to start.
+
+Surgical Strike proper is a toy programming language for creating patterns of 
+textured 3D objects. The keywords of the language are intended to sound 
+militaristic. Although Surgical Strike can use any 3D models or textures, it 
+is intended to use models of military artefacts and images of software logos. 
+The language features iteration but not branching or even variables so it is 
+not Turing complete.
+
+The original version of Surgical Strike was written in C++ using Apple's 
+QuickDraw 3D for Power Macintosh on Mac OS 7.x . The parser was hand-written 
+and compiled programs were executed using a bytecode format inspired by the 
+public documentation of Display PostScript. Given the unmaintainability of this
+code and possible rights issues the current version has been written from 
+scratch.
+
+Surgical Strike is not anti-militaristic except to the extent that it works 
+with the assumptions of the cultures it is targeted at. Those cultures were 
+idealistic mid-1990s art computing and mid-1990s art criticism ignorant of the 
+content of art computing. The title is a piece of military jargon that served 
+to illustrate the gap between depiction and reality. But the gap that it 
+indicated was in the target cultures, not (neccessarily) between the ideals and
+reality of militarism.
