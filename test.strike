@@ -1,0 +1,19 @@
+incoming!
+
+// The original test routine re-written
+
+codeword blim
+	 manouver 1 90 0
+	 roll 0 30 0
+//	 scale .75 .5 1.5
+	 deliver
+set
+
+// Main orders
+
+load "f-117.dxf"
+camouflage "Win.png"
+
+blim 4
+
+//deliver

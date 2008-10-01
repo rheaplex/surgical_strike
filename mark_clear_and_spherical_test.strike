@@ -1,0 +1,40 @@
+incoming!
+
+// Mark, clear & spherical co-ordinate test
+
+codeword blim
+	manouver 0 36 0
+	roll 0 36 0
+	deliver
+set
+
+codeword mau
+	manouver 0 0 36
+	roll 0 36 0
+	deliver
+set
+
+codeword klin
+	mark
+		manouver .1 0 0	// My first failure to understand my own programming language. :)
+		blim 10
+	clear
+set
+
+codeword stymie
+	mark
+		manouver .1 90 0
+		mau 10
+	clear
+set
+
+// main orders
+
+load "stealth.3dmf"
+	camouflage "Netscape.PICT"
+	manouver 0.11 0 0
+	klin 1
+	camouflage "Win.PICT"
+	manouver -0.22 0 0
+	stymie 1
+	

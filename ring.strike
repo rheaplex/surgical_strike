@@ -1,0 +1,15 @@
+incoming!
+
+codeword blim
+	 manouver 0 18 0
+	 roll 0 18 0
+	 deliver
+set
+
+// Main orders
+
+load "f-117.dxf"
+camouflage "MacOS.png"
+roll 0 90 0
+manouver 0.1 0 0
+blim 22
