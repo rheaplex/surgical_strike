@@ -1,21 +1,19 @@
 /*
-Surgical Strike Free Software.
-Copyright (C) 2008 Rob Myers
+    Surgical Strike (Free Software Version).
+    Copyright (C) 2008 Rob Myers
 
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option, and if the Coin3D library supports it) any later 
-version.
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #ifndef __SURGICAL_STRIKE_H__
@@ -35,6 +33,6 @@ void parse_deliver ();
 void parse_codeword_execution (const char * codeword, int times);
 
 void write_file (const std::string & filename);
-void run_main ();
+void run_main (const std::string & savefilename);
 
 #endif

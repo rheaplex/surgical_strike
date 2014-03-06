@@ -1,6 +1,6 @@
 /*
     Surgical Strike (Free Software Version).
-    Copyright (C) 2008 Rob Myers
+    Copyright (C) 2008, 2014 Rob Myers
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 
 %{
 
-#include <stdio.h>
+#include <cstdio>
 #include <cstring>
 #include <string>
 
@@ -26,15 +26,13 @@
 
 #include "y.tab.hpp"
 
-extern "C"
+void yyerror(const char *);
+int yyparse (void);
+int yylex (void);
+
+extern "C" int yywrap (void)
 {
-  void yyerror(const char *);
-  int yyparse (void);
-  int yylex (void);
-  int yywrap (void)
-  {
     return 1;
-  }
 }
 
 #define YY_INPUT(buf,result,max_size)  {\
@@ -79,8 +77,8 @@ program: incoming statements;
 
 incoming: INCOMING               { parse_incoming (); };
 
-statements: statement 
-| codeword_definition 
+statements: statement
+| codeword_definition
 | statements statement;
 
 codeword_start: CODEWORD IDENTIFIER { parse_codeword ($2); };
@@ -114,7 +112,7 @@ void yyerror (const char *msg)
 }
 
 
-int main(int argc, char ** argv) 
+int main(int argc, char ** argv)
 {
   std::string output_file = "out.obj";
   if (((argc == 2) &&
@@ -137,7 +135,7 @@ int main(int argc, char ** argv)
       FILE * new_stdin = freopen (argv[1], "r", stdin);
       if (new_stdin == NULL)
 	{
-	  std::fprintf (stderr, "Couldn't open input file %s.\n");
+        std::fprintf (stderr, "Couldn't open input file %s.\n", argv[1]);
 	  exit (1);
 	}
     }
@@ -148,9 +146,5 @@ int main(int argc, char ** argv)
   if (debug) std::fprintf (stderr, "Parsing input file.\n");
   yyparse ();
   if (debug) std::fprintf (stderr, "Executing commands.\n");
-  run_main ();
-  if (debug) std::fprintf (stderr, "Writing output file.\n");
-  // Then run in viewer and/or dump to .iv file
-  write_file (output_file);
-  if (debug) std::fprintf (stderr, "Finished.\n");  
+  run_main (output_file);
 }
