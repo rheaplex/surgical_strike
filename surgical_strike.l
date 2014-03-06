@@ -53,6 +53,6 @@
 
 [ \t\n]+             ;       /* ignore whitespace */
 
-.                    {printf("Unknown character [%c]\n",yytext[0]); }
+.                    { printf("Unknown character [%c]\n",yytext[0]); }
 
 %%

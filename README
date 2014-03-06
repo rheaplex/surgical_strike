@@ -15,7 +15,7 @@ surgical_strike
   Read from stdin, write to stdout.
 
 surgical_strike [input file]
-  Read input file, write to stdout
+  Read input file, write to out.obj|mtl
 
 surgical_strike [input file] [output file]
   Read input file, write output file
@@ -41,7 +41,8 @@ universities and finally into art practice. This history is present in the
 language and social assumptions of computing. This culture sits uncomfortably 
 with the culture of art, or at least it should. Surgical Strike depicts these 
 contradictions in the form of ironized computer art in order to make them 
-explicit.
+explicit. I forget what I was reading at the time but it was probably "War In
+The Age Of Intelligent Machines".
 
 The source materials for Surgical Strike were military jargon, the art of 
 William Latham (due to its status as paradigmatic "computer art" at the time), 
@@ -67,14 +68,14 @@ textured 3D objects. The keywords of the language are intended to sound
 militaristic. Although Surgical Strike can use any 3D models or textures, it 
 is intended to use models of military artefacts and images of software logos. 
 The language features iteration but not branching or even variables so it is 
-not Turing complete.
+not anywhere near Turing complete.
 
 The original version of Surgical Strike was written in C++ using Apple's 
 QuickDraw 3D for Power Macintosh on Mac OS 7.x . The parser was hand-written 
 and compiled programs were executed using a bytecode format inspired by the 
 public documentation of Display PostScript. Given the unmaintainability of this
-code and possible rights issues the current version has been written from 
-scratch.
+code and to avoid any conceivable rights issues the current version has been
+written from scratch.
 
 Surgical Strike is not anti-militaristic except to the extent that it works 
 with the assumptions of the cultures it is targeted at. Those cultures were 

@@ -1,0 +1,5 @@
+incoming!
+
+load "f-117.dxf"
+camouflage "MacOS.png"
+deliver
