@@ -118,31 +118,29 @@ int main(int argc, char ** argv)
   if (((argc == 2) &&
        (std::strcmp (argv[1], "--help") == 0)) ||
       (argc > 3))
-    {
-      std::printf ("Surgical Strike Free Software version 0.1\n"
+  {
+      std::printf ("Surgical Strike Free Software version 0.3\n"
 		   "USAGE:\n"
-		   "surgical_strike - Read from stdin, write to stdout.\n"
-		   "surgical_strike [input file] - "
-		   "Read input file, write to stdout\n"
+		   "surgical_strike - Read from stdin, write to out.obj|.mtl\n"
 		   "surgical_strike [input file] [output file] - "
 		   "Read input file, write output file\n");
       exit (0);
-    }
+  }
   if (debug) std::fprintf (stderr, "Starting up.\n");
   if (argc == 2)
-    {
+  {
       std::fprintf (stderr, "Opening input file %s.\n", argv[1]);
       FILE * new_stdin = freopen (argv[1], "r", stdin);
       if (new_stdin == NULL)
-	{
-        std::fprintf (stderr, "Couldn't open input file %s.\n", argv[1]);
-	  exit (1);
-	}
-    }
+      {
+          std::fprintf (stderr, "Couldn't open input file %s.\n", argv[1]);
+          exit (1);
+      }
+  }
   if (argc == 3)
-    {
+  {
       output_file = argv[2];
-    }
+  }
   if (debug) std::fprintf (stderr, "Parsing input file.\n");
   yyparse ();
   if (debug) std::fprintf (stderr, "Executing commands.\n");

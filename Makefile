@@ -1,5 +1,5 @@
 # Surgical Strike Free Software.
-# Copyright (C) 2008 Rob Myers
+# Copyright (C) 2008, 2014 Rob Myers
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@ release:
 	../surgical_strike/surgical_strike.y \
 	../surgical_strike/surgical_strike.cpp \
 	../surgical_strike/surgical_strike.h \
+	../surgical_strike/surgical-strike-mode.el \
 	../surgical_strike/*.strike \
 	../surgical_strike/*.png \
 	../surgical_strike/*.dxf \
@@ -45,6 +46,9 @@ release:
 	../surgical_strike/Changelog \
 	../surgical_strike/DISCLAIMER \
 	../surgical_strike/README
+
+install:
+	install surgical_strike /usr/local/bin/
 
 clean:
 	rm -f *.o

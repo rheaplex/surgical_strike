@@ -449,6 +449,20 @@ struct Payload : public Command
         payload_file_name = filename;
     }
 
+    osg::Node * scaleToUnit (osg::Node * payload)
+    {
+        const osg::BoundingSphere & bounds = payload->getBound();
+        float diameter = bounds.radius() * 2.0;
+        float factor = 1.0 / diameter;
+        osg::Matrix matrix;
+        matrix.makeScale(factor, factor, factor);
+        osg::MatrixTransform * scaled_node = new osg::MatrixTransform();
+        scaled_node->ref();
+        scaled_node->setMatrix(matrix);
+        scaled_node->addChild(payload);
+        return scaled_node;
+    }
+
     virtual void execute ()
     {
         assert (theater != NULL);
@@ -710,7 +724,6 @@ void run_main (const std::string & savefilename)
     main.execute ();
 
     if (debug) std::fprintf (stderr, "Writing output file.\n");
-    // Then run in viewer and/or dump to .iv file
     write_file (savefilename);
     if (debug) std::fprintf (stderr, "Finished.\n");
 
