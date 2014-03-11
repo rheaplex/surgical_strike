@@ -1,9 +1,9 @@
 incoming!
 
 codeword blim
- manouver 0 60 0
- roll 0 60 0
- deliver
+  manouver 0 60 0
+  roll 0 60 0
+  deliver
 set
 
 load "Stealth.3dmf"

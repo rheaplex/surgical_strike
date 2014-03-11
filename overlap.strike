@@ -1,0 +1,18 @@
+incoming!
+
+codeword blim
+  manouver 0 18 0
+  roll 0 18 0
+  deliver
+set
+
+load "Stealth.3dmf"
+camouflage "MacOS.png"
+roll 0 90 0
+manouver .1 0 0
+blim 22
+manouver .3 0 0
+camouflage "Win.png"
+mark
+  blim 22
+clear

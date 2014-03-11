@@ -77,17 +77,25 @@ program: incoming statements;
 
 incoming: INCOMING               { parse_incoming (); };
 
-statements: statement
-| codeword_definition
+statements:
+/* empty */
 | statements statement;
+
+statement:
+codeword_definition
+| command;
 
 codeword_start: CODEWORD IDENTIFIER { parse_codeword ($2); };
 
 codeword_end: SET                { parse_set (); };
 
-codeword_definition: codeword_start statements codeword_end;
+codeword_definition: codeword_start commands codeword_end;
 
-statement:
+commands:
+/* empty */
+| commands command;
+
+command:
 MARK                             { parse_mark (); }
 | CLEAR                          { parse_clear (); }
 | MANOUVER NUMBER NUMBER NUMBER  { parse_manouver ($2, $3, $4); }
@@ -119,7 +127,7 @@ int main(int argc, char ** argv)
        (std::strcmp (argv[1], "--help") == 0)) ||
       (argc > 3))
   {
-      std::printf ("Surgical Strike Free Software version 0.3\n"
+      std::printf ("Surgical Strike Free Software version 0.4\n"
 		   "USAGE:\n"
 		   "surgical_strike - Read from stdin, write to out.obj|.mtl\n"
 		   "surgical_strike [input file] [output file] - "

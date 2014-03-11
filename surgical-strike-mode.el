@@ -85,13 +85,12 @@
     (let ((indent 0))
       (while (not (bobp))
         (when (not (looking-at "^\s*\\\\"))
-          (cond
-           ((looking-at "^\s*\\(codeword\\|mark\\)")
-            (incf indent))
-           ((looking-at "^\s*\\(set\\|clear\\)")
-            (decf indent))))
-        (forward-line -1))
-      indent)))
+          (when (looking-at "^\s*\\(set\\|clear\\)")
+            (decf indent))
+          (forward-line -1)
+           (when (looking-at "^\s*\\(codeword\\|mark\\)")
+            (incf indent))))
+      (* indent surgical-strike-indent))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Running

@@ -1,0 +1,16 @@
+incoming!
+
+// The original test routine re-written
+
+codeword blim
+  roll 0 30 0
+  manouver .02 .02 .02
+  scale .75 .5 1.5
+  deliver
+set
+
+// main orders
+
+load "banana.b3d"
+
+blim 9
