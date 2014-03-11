@@ -16,11 +16,14 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#define MANOUVER_X_RELATIVE (1)
+
 ////////////////////////////////////////////////////////////////////////////////
 // Includes
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cassert>
+#include <cmath>
 #include <cstdio>
 #include <map>
 #include <string>
@@ -64,8 +67,7 @@ bool debug = true;
 const char * MAIN = "@main";
 
 const double PI = 3.14159265;
-const double RADIANS = 2.0 * PI;
-const double DEGS_TO_RADS = RADIANS / 360.0;
+const double DEGS_TO_RADS = PI / 180.0;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Base class for commands
@@ -125,23 +127,31 @@ std::string current_codeword = MAIN;
 // Geometry Utility
 ////////////////////////////////////////////////////////////////////////////////
 
-osg::Vec3f spherical_to_cartesian (osg::Vec3d & spher, double scale)
+
+osg::Vec3d spherical_to_cartesian_radians (osg::Vec3d & spher, double scale)
 {
-    double x = spher.x () *
-        sin (spher.y () * DEGS_TO_RADS) *
-        cos (spher.z () * DEGS_TO_RADS) *
-        scale;
+    double r = spher.x ();
+    double lambda = spher.y ();
+    double phi = spher.z ();
+    
+    double sphi = sin (phi);
+    double cphi = cos (phi);
+    double slambda = sin (lambda);
+    double clambda = cos (lambda);
+    double x = scale * r * cphi * clambda;
+    double y = scale * r * cphi * slambda;
+    double z = scale * r * sphi;
 
-    double y = spher.x () *
-        sin (spher.y () * DEGS_TO_RADS) *
-        sin (spher.z () * DEGS_TO_RADS) *
-        scale;
-
-    double z = spher.x () * cos (spher.y () * DEGS_TO_RADS) * scale;
-
-    return osg::Vec3f (x, y, z);
+    return osg::Vec3d(x, y, z);
 }
 
+osg::Vec3d spherical_to_cartesian (osg::Vec3d & spher, double scale)
+{
+    osg::Vec3d rads(spher.x (),
+                    spher.y () * DEGS_TO_RADS,
+                    spher.z () * DEGS_TO_RADS);
+    return spherical_to_cartesian_radians(rads, scale);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // Current Transformation Matrix management
@@ -279,6 +289,7 @@ struct Incoming : public Command
 struct Manouver : public Command
 {
     // For historical reasons, x is absolute but y and z are relative
+    // unless we enable otherwise
     float x, y, z;
 
     Manouver (float n1, float n2, float n3)
@@ -290,17 +301,25 @@ struct Manouver : public Command
 
     virtual void execute ()
     {
-        //if (debug)
-        //  std::fprintf (stderr, "Executing manouver %f %f %f\n", x, y, z);
-        // Scale movement to the spherical bounds of the current payload
-        //double size = payload_sizes[current_payload];
+        if (debug)
+            std::fprintf (stderr, "Executing manouver %f %f %f\n", x, y, z);
 
         osg::Vec3d & spherical = position ();
-        spherical.x () = x;
+        spherical.x () =
+#ifdef MANOUVER_X_RELATIVE
+            spherical.x () +
+#endif
+            x;
         spherical.y () = spherical.y () + y;
         spherical.z () = spherical.z () + z;
-        std::fprintf (stderr, "%f %f %f\n", spherical.x(), spherical.y(),
+        std::fprintf (stderr, "Spherical: %f %f %f\n", spherical.x(), spherical.y(),
                       spherical.z() );
+
+        double size = payload_sizes[current_payload];
+        osg::Vec3d cartesian = spherical_to_cartesian (spherical, size);
+        std::fprintf (stderr, "Cartesian: %f %f %f\n", cartesian.x(), cartesian.y(),
+                      cartesian.z() );
+        
         position () = spherical;
     }
 };

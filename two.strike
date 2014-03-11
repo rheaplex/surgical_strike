@@ -1,0 +1,23 @@
+incoming!
+
+codeword klin
+  manouver 0 45 0
+  deliver
+set
+
+codeword blim
+  manouver 0 0 45
+  deliver
+set
+
+load "cube.obj"
+camouflage "MacOS.png"
+
+manouver 2 0 0
+mark
+  klin 8
+clear
+manouver 1 0 0
+mark
+  blim 8
+clear
