@@ -1,0 +1,132 @@
+\title{Surgical Strike The Language}
+\author{Rob Myers}
+
+\documentclass[12pt]{article}
+
+\begin{document}
+\maketitle
+
+\section{Overview}
+
+This document defines the syntax of Surgical Strike, a simple (non-Turing-complete) programming language for creating 3D graphics.
+
+\section{Keywords}
+
+\subsection{incoming!}
+
+\texttt{incoming!}
+
+This keyword must appear once and only once at the start of the program.
+
+\subsection{camouflage}
+
+\texttt{camouflage ``filename''}
+
+Load the specified 3D model file to be inserted when ``deliver'' is called
+
+In the current implementation, this can be any model format supported by OpenSceneGraph.
+
+\subsection{deliver}
+
+\texttt{deliver}
+
+Add the current payload (the model loaded by ``load'' textured with the bitmap loaded by ``camouflage'') to the theater.
+
+\subsection{clear}
+
+\texttt{clear}
+
+Pop the current transformation matrix from the save stack. 
+
+\subsection{codeword}
+
+\texttt{codeword name}
+
+Start defining a new codeword with the given name.
+
+This name must be unique within the .strike file.
+
+It must start with a letter from a-z, and can contain only letters from a-z and numbers from 0-9.
+
+Codewords cannot contain definitions for other codewords, but may contain calls to them.
+
+\subsection{load}
+
+\texttt{payload ``filename''}
+
+Load the specified 2D bitmap image file to be mapped on to the current model when ``deliver'' is called
+
+In the current implementation, this can be any 2D bitmap format supported by OpenSceneGraph.
+
+\subsection{manouver}
+
+\texttt{manouver radius lambda phi}
+
+radius is the radius from the current origin, in multiples of the (approximate) bounding sphere of the payload.
+
+lambda is longitude around the current origin, in degrees.
+
+phi is latitude around the current origin, in degrees.
+
+\subsection{mark}
+
+\texttt{mark}
+
+Push the current transformation matrix onto the save stack. 
+
+\subsection{roll}
+
+\texttt{roll x y z}
+
+x is added to rotation around the x axis.
+
+y is added to rotation around the y axis.
+
+z is added to rotation around the z axis.
+
+\subsection{scale}
+
+\texttt{scale x y z}
+
+x is added to the scale of units along the x axis.
+
+y is added to the scale of units along the y axis.
+
+z is added to the scale of units along the z axis.
+
+\subsection{set}
+
+\texttt{set}
+
+Finish defining the codeword that began being defined with ``codeword''.
+
+\section{Defining Codewords}
+
+Codeword definitions have the following form:
+
+\texttt{
+codeword klin
+  manouver 0 0 45
+  deliver
+set
+}
+
+This creates a codeword named ``klin'' that moves 45 degrees and then adds an instance of the current model to the theater.
+
+\section{Executing Codewords}
+
+Codeword invocations must have one of the following forms:
+
+\texttt{
+klin
+}
+
+This will execute the previously defined codeword ``klin''.
+
+\texttt{
+klin 12
+}
+
+This will execute the previously defined codeword ``klin'' 12 times.
+
+\end{document}
