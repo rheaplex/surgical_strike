@@ -103,6 +103,7 @@ MARK                             { parse_mark (); }
 | SCALE NUMBER NUMBER NUMBER     { parse_scale ($2, $3, $4); }
 | LOAD STRING                    { parse_payload ($2); }
 | CAMOUFLAGE STRING              { parse_camouflage ($2); }
+| IDENTIFIER                     { parse_codeword_execution ($1, 1); }
 | IDENTIFIER NUMBER              { parse_codeword_execution ($1, $2); }
 | DELIVER                        { parse_deliver (); }
 ;

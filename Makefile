@@ -16,7 +16,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-all: lex.yy.c y.tab.cpp surgical_strike
+all: lex.yy.c y.tab.cpp surgical_strike surgical_strike.pdf
 
 lex.yy.c: surgical_strike.l
 	flex surgical_strike.l
@@ -28,6 +28,9 @@ surgical_strike: lex.yy.o y.tab.cpp surgical_strike.cpp
 	c++ -Wall -g lex.yy.c y.tab.cpp surgical_strike.cpp \
 	    -lOpenThreads -losg -losgDB -losgUtil -losgGA -losgText -losgViewer \
 		-o surgical_strike
+
+surgical_strike.pdf: surgical_strike.tex
+	pdflatex surgical_strike.tex
 
 release:
 	tar -zcvf surgical_strike.tar.gz \

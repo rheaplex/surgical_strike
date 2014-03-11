@@ -7,3 +7,6 @@ y.tab.*
 surgical_strike
 out.obj
 out.mtl
+*.aux
+*.log
+
