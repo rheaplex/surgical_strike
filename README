@@ -12,7 +12,7 @@ Running
 -------
 
 surgical_strike
-  Read from stdin, write to stdout.
+  Read from stdin, write to out.obj|mtl
 
 surgical_strike [input file]
   Read input file, write to out.obj|mtl

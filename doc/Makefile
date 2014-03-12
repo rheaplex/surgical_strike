@@ -16,10 +16,12 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-all: src doc
-	$(MAKE) -C src
-	$(MAKE) -C doc
+all: surgical_strike.pdf
+
+surgical_strike.pdf: surgical_strike.tex
+	pdflatex surgical_strike.tex
 
 clean:
-	$(MAKE) clean -C src
-	$(MAKE) clean -C doc
+	rm -f *.aux
+	rm -f *.log
+	rm -f *.pdf
