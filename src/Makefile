@@ -1,5 +1,5 @@
 # Surgical Strike Free Software.
-# Copyright (C) 2014 Rob Myers
+# Copyright (C) 2008, 2014 Rob Myers
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,10 +16,26 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-all: src doc
-	$(MAKE) -C src
-	$(MAKE) -C doc
+all: lex.yy.c y.tab.cpp surgical_strike
+
+lex.yy.c: surgical_strike.l
+	flex surgical_strike.l
+
+y.tab.cpp: surgical_strike.y
+	bison --verbose --debug --defines surgical_strike.y -o y.tab.cpp
+
+surgical_strike: lex.yy.o y.tab.cpp surgical_strike.cpp
+	c++ -Wall -g lex.yy.c y.tab.cpp surgical_strike.cpp \
+	    -lOpenThreads -losg -losgDB -losgUtil -losgGA -losgText -losgViewer \
+		-o surgical_strike
+
+install:
+	install surgical_strike /usr/local/bin/
 
 clean:
-	$(MAKE) clean -C src
-	$(MAKE) clean -C doc
+	rm -f *.o
+	rm -f lex.yy.c
+	rm -f y.tab.cpp
+	rm -f surgical_strike
+	rm -f y.output
+	rm -f y.tab.hpp

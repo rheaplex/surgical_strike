@@ -10,7 +10,7 @@ codeword blim
   deliver
 set
 
-load "cube.obj"
+load "f-117.dxf"
 camouflage "MacOS.png"
 
 manouver 2 0 0
