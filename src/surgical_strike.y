@@ -29,6 +29,7 @@
 void yyerror(const char *);
 int yyparse (void);
 int yylex (void);
+void yyunput(int c, register char * yy_bp);
 
 extern "C" int yywrap (void)
 {

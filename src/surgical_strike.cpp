@@ -180,7 +180,21 @@ osg::Vec3d & scale ()
 osg::Matrixd origin_transform ()
 {
     osg::Matrixd matrix;
+    //matrix.makeTranslate (origin ());
+    return matrix;
+}
+
+osg::Matrixd origin_transform_from ()
+{
+    osg::Matrixd matrix;
     matrix.makeTranslate (origin ());
+    return matrix;
+}
+
+osg::Matrixd origin_transform_to ()
+{
+    osg::Matrixd matrix;
+    matrix.makeTranslate (- origin ());
     return matrix;
 }
 
@@ -195,7 +209,7 @@ osg::Matrixd position_transform ()
 osg::Matrixd rotation_transform ()
 {
     osg::Vec3f rotate = rotation ();
-    osg::Matrixd matrix;
+    osg::Matrixd matrix = origin_transform_to ();
     if (rotate.x () != 0.0)
     {
         osg::Matrixd rotatex;
@@ -215,19 +229,26 @@ osg::Matrixd rotation_transform ()
         matrix  *= rotatez;
     }
 
+    matrix *= origin_transform_from ();
+
     return matrix;
 }
 
 osg::Matrixd scale_transform ()
 {
-    osg::Matrixd matrix;
-    matrix.makeScale (scale ());
+    osg::Matrixd matrix;// = origin_transform_to ();
+
+    osg::Matrixd scaling;
+    scaling.makeScale (scale ());
+    matrix *= scaling;
+    
+    //matrix *= origin_transform_from ();
     return matrix;
 }
 
 osg::Matrixd current_transform ()
 {
-    return origin_transform () *
+    return //origin_transform () *
         position_transform () *
         scale_transform () *
         rotation_transform ();
@@ -321,6 +342,7 @@ struct Manouver : public Command
                       cartesian.z() );
         
         position () = spherical;
+        origin () += cartesian;
     }
 };
 

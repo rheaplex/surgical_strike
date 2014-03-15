@@ -1,0 +1,24 @@
+incoming!
+
+codeword lambda
+  manouver 0 45 0
+  deliver
+set
+
+codeword phi
+  manouver 0 0 45
+  deliver
+set
+
+load "cube.obj"
+camouflage "1.png"
+
+mark
+manouver 2 0 0
+  lambda 8
+clear
+
+mark
+manouver 10 0 0
+  phi 8
+clear
