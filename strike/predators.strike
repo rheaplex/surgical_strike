@@ -1,0 +1,18 @@
+
+incoming!
+
+codeword blim
+	 manouver 0 18 0
+	 roll 0 18 0
+	 deliver
+set
+
+// Main orders
+
+//load "../payloads/F-117.stl"
+load "../payloads/Northrop_B-2_Spirit.stl"
+camouflage "../payloads/Amazon-Logo.jpg"
+
+roll 0 90 0
+manouver 1 0 0
+blim 22

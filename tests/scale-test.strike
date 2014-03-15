@@ -1,0 +1,63 @@
+incoming!
+
+load "cube.obj"
+
+codeword klin
+  manouver -2 0 0
+  scale 0.5 0.5 0.5
+  deliver
+set
+
+mark
+  manouver -2 90 0
+  camouflage "1.png"
+  deliver
+
+  camouflage "2.png"
+  klin 5
+clear
+
+mark
+
+  camouflage "3.png"
+  deliver
+  
+  manouver 2 0 0
+  camouflage "4.png"
+  mark
+    deliver
+  clear
+  
+  manouver 2 0 0
+  camouflage "5.png"
+  mark
+    scale 0.9 0.9 0.9
+    deliver
+  clear
+
+  manouver 2 0 0
+  camouflage "5.png"
+  mark
+    scale 0.9 0.9 0.9
+    deliver
+  clear
+
+  manouver 2 0 0
+  mark
+    scale 0.5 0.5 0.5
+    deliver
+  clear
+  
+  manouver 2 0 0
+  mark
+    scale 0.25 0.25 0.25
+    deliver
+  clear
+
+  manouver 2 0 0
+  mark
+    scale 0.1 0.1 0.1
+    deliver
+  clear
+  
+clear

@@ -1,0 +1,40 @@
+incoming!
+
+load "cube.obj"
+camouflage "1.png"
+
+codeword klin
+  roll 45 0 0
+  deliver
+set
+
+codeword blim
+  roll 0 45 0
+  deliver
+set
+
+codeword stymie
+  roll 0 0 45
+  deliver
+set
+
+mark
+  manouver 1 0 0
+  mark
+    klin 2
+  clear
+clear
+  
+mark
+  manouver 5 0 0
+  mark
+    blim 2
+  clear
+clear
+
+mark
+  manouver 9 0 0
+  mark
+    stymie 2
+  clear
+clear
