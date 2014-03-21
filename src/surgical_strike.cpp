@@ -41,7 +41,7 @@
 #include <osg/TexGen>
 #include <osg/Vec3f>
 
-//#include <osg/ShapeDrawable>
+#include <osg/ShapeDrawable>
 
 #include <osgDB/Registry>
 #include <osgDB/ReadFile>
@@ -439,8 +439,8 @@ struct Camouflage : public Command
         texture->setDataVariance (osg::Object::DYNAMIC);
         texture->setFilter (osg::Texture::MIN_FILTER, osg::Texture::LINEAR_MIPMAP_LINEAR);
         texture->setFilter (osg::Texture::MAG_FILTER, osg::Texture::LINEAR);
-        texture->setWrap (osg::Texture::WRAP_S, osg::Texture::CLAMP);
-        texture->setWrap (osg::Texture::WRAP_T, osg::Texture::CLAMP);
+        texture->setWrap (osg::Texture::WRAP_S, osg::Texture::CLAMP_TO_EDGE);
+        texture->setWrap (osg::Texture::WRAP_T, osg::Texture::CLAMP_TO_EDGE);
         texture->setImage (image);
         return texture;
     }
@@ -557,10 +557,10 @@ struct Deliver : public Command
         if (debug)
             std::fprintf (stderr, "Delivering payload\n");
 
-        osg::Node * deliver =
-            (osg::Node*)current_payload->clone (osg::CopyOp::SHALLOW_COPY);
+        osg::Node * deliver;
+        deliver = (osg::Node*)current_payload->clone (osg::CopyOp::SHALLOW_COPY);
 
-        /*osg::Geode *sphere = new osg::Geode();
+        /*osg::Geode *sphere = new osg::Geode;
         sphere->addDrawable(new osg::ShapeDrawable(new osg::Sphere(osg::Vec3f(), 1)));
         sphere->ref();
         deliver = sphere;*/
@@ -579,17 +579,16 @@ struct Deliver : public Command
             osg::ref_ptr<osg::LightModel> lightModel = new osg::LightModel;
             lightModel->setTwoSided(true);
             stateset->setAttributeAndModes(lightModel.get());
+            
             stateset->setTextureAttributeAndModes (0, current_camouflage,
-                                                   osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
-
+                                                   osg::StateAttribute::ON
+                                                   | osg::StateAttribute::OVERRIDE);
+            
             osg::ref_ptr<osg::TexGen> texGen(new osg::TexGen());
-            //texGen->setMode(osg::TexGen::OBJECT_LINEAR);
-            //texGen->setPlane(osg::TexGen::S, osg::Plane(1.0, 0.0, 0.0, 0.0));
-            //texGen->setPlane(osg::TexGen::T, osg::Plane(0.0, 1.0, 0.0, 0.0));
-            // This seems hacky but works for now
-            texGen->setPlane(osg::TexGen::S, osg::Plane(0.06, 0.0, 0.0, 0.1));
-            texGen->setPlane(osg::TexGen::T, osg::Plane(0.0, 0.06, 0.0, 0.1));
-
+            const osg::BoundingSphere & bounds = deliver->getBound();
+            float factor = 1.0 / bounds.radius();
+            texGen->setPlane(osg::TexGen::S, osg::Plane(factor, 0.0, 0.0, 0.5));
+            texGen->setPlane(osg::TexGen::T, osg::Plane(0.0, factor, 0.0, 0.5));
             stateset->setTextureAttributeAndModes(0, texGen);
         }
         osg::MatrixTransform * target =
