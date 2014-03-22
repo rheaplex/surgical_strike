@@ -24,10 +24,14 @@ lex.yy.c: surgical_strike.l
 y.tab.cpp: surgical_strike.y
 	bison --verbose --debug --defines surgical_strike.y -o y.tab.cpp
 
+# Suppress unused-function as lex.yy.c has a generated static one
+
 surgical_strike: lex.yy.o y.tab.cpp surgical_strike.cpp
-	c++ -Wall -g lex.yy.c y.tab.cpp surgical_strike.cpp \
-	    -lOpenThreads -losg -losgDB -losgUtil -losgGA -losgText -losgViewer \
-		-o surgical_strike
+	c++ -Wall -Wno-unused-function -g \
+	lex.yy.c y.tab.cpp surgical_strike.cpp \
+	-lOpenThreads \
+	-losg -losgDB -losgUtil -losgGA -losgText -losgViewer \
+	-o surgical_strike
 
 install:
 	install surgical_strike /usr/local/bin/
