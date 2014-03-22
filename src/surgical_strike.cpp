@@ -41,7 +41,7 @@
 #include <osg/TexGen>
 #include <osg/Vec3f>
 
-#include <osg/ShapeDrawable>
+//#include <osg/ShapeDrawable>
 
 #include <osgDB/Registry>
 #include <osgDB/ReadFile>
@@ -64,7 +64,7 @@ bool debug = true;
 // Constants
 ////////////////////////////////////////////////////////////////////////////////
 
-const char * MAIN = "@main";
+const char * MAIN = "Main entry point";
 
 const double PI = 3.14159265;
 const double DEGS_TO_RADS = PI / 180.0;
@@ -114,7 +114,7 @@ std::vector<osg::Vec3d> scale_stack;
 // We should use smart pointers rather than pointers because the STL sucks.
 std::map <std::string, std::vector <Command*> > codewords;
 
-// The name of the codeword that is currently being parsed, or "@main".
+// The name of the codeword that is currently being parsed, or MAIN.
 std::string current_codeword = MAIN;
 
 
@@ -167,6 +167,12 @@ osg::Vec3d & position ()
     return position_stack.back ();
 }
 
+osg::Vec3d cartesian_position ()
+{
+    double size = payload_sizes[current_payload];
+    return spherical_to_cartesian (position (), size);
+}
+
 osg::Vec3d & rotation ()
 {
     return rotation_stack.back ();
@@ -180,29 +186,28 @@ osg::Vec3d & scale ()
 osg::Matrixd origin_transform ()
 {
     osg::Matrixd matrix;
-    //matrix.makeTranslate (origin ());
+    matrix.makeTranslate (origin ());
     return matrix;
 }
 
 osg::Matrixd origin_transform_from ()
 {
     osg::Matrixd matrix;
-    matrix.makeTranslate (origin ());
+    matrix.makeTranslate (origin () + cartesian_position ());
     return matrix;
 }
 
 osg::Matrixd origin_transform_to ()
 {
     osg::Matrixd matrix;
-    matrix.makeTranslate (- origin ());
+    matrix.makeTranslate (- (origin () + cartesian_position ()));
     return matrix;
 }
 
 osg::Matrixd position_transform ()
 {
     osg::Matrixd matrix;
-    double size = payload_sizes[current_payload];
-    matrix.makeTranslate (spherical_to_cartesian (position (), size));
+    matrix.makeTranslate (cartesian_position ());
     return matrix;
 }
 
@@ -213,19 +218,19 @@ osg::Matrixd rotation_transform ()
     if (rotate.x () != 0.0)
     {
         osg::Matrixd rotatex;
-        rotatex.makeRotate (rotate.x (), 1.0, 0, 0);
+        rotatex.makeRotate (rotate.x () * DEGS_TO_RADS, 1.0, 0, 0);
         matrix *= rotatex;
     }
     if (rotate.y () != 0.0)
     {
         osg::Matrixd rotatey;
-        rotatey.makeRotate (rotate.y (), 0.0, 1.0, 0);
+        rotatey.makeRotate (rotate.y () * DEGS_TO_RADS, 0.0, 1.0, 0);
         matrix *= rotatey;
     }
     if (rotate.z () != 0.0)
     {
         osg::Matrixd rotatez;
-        rotatez.makeRotate (rotate.z (), 0.0, 0.0, 1.0);
+        rotatez.makeRotate (rotate.z () * DEGS_TO_RADS, 0.0, 0.0, 1.0);
         matrix  *= rotatez;
     }
 
@@ -248,16 +253,20 @@ osg::Matrixd scale_transform ()
 
 osg::Matrixd current_transform ()
 {
-    return //origin_transform () *
+    return origin_transform () *
         position_transform () *
         scale_transform () *
-        rotation_transform ();
+        rotation_transform () ;
 }
 
 void push_transforms ()
 {
-    origin_stack.push_back (origin ());
-    position_stack.push_back (position ());
+    osg::Vec3d zero (0.0, 0.0, 0.0);
+    // FIXME: If you mark after loading a new model of a different size
+    // this will set the origin based on the new size.
+    // For the moment just make sure to load inside marks.
+    origin_stack.push_back (cartesian_position ());
+    position_stack.push_back (zero);
     rotation_stack.push_back (rotation ());
     scale_stack.push_back (scale ());
 }
@@ -333,16 +342,8 @@ struct Manouver : public Command
             x;
         spherical.y () = spherical.y () + y;
         spherical.z () = spherical.z () + z;
-        std::fprintf (stderr, "Spherical: %f %f %f\n", spherical.x(), spherical.y(),
-                      spherical.z() );
-
-        double size = payload_sizes[current_payload];
-        osg::Vec3d cartesian = spherical_to_cartesian (spherical, size);
-        std::fprintf (stderr, "Cartesian: %f %f %f\n", cartesian.x(), cartesian.y(),
-                      cartesian.z() );
         
         position () = spherical;
-        origin () += cartesian;
     }
 };
 
@@ -352,9 +353,9 @@ struct Roll : public Command
 
     Roll (float n1, float n2, float n3)
     {
-        x = n1;
-        y = n2;
-        z = n3;
+        x += n1;
+        y += n3;
+        z += n2;
     }
 
     virtual void execute ()
@@ -560,22 +561,12 @@ struct Deliver : public Command
         osg::Node * deliver;
         deliver = (osg::Node*)current_payload->clone (osg::CopyOp::SHALLOW_COPY);
 
-        /*osg::Geode *sphere = new osg::Geode;
-        sphere->addDrawable(new osg::ShapeDrawable(new osg::Sphere(osg::Vec3f(), 1)));
-        sphere->ref();
-        deliver = sphere;*/
-
         if (current_camouflage != NULL)
         {
             //if (debug)
             //    std::fprintf (stderr, "Camouflaging.\n");
             osg::ref_ptr<osg::StateSet> stateset = deliver->getOrCreateStateSet ();
             assert (stateset != NULL);
-            /*osg::Material *material = new osg::Material();
-            material->setEmission(osg::Material::FRONT,
-                                  osg::Vec4(1.0, 1.0, 1.0, 1.0));
-            stateset->ref();
-            stateset->setAttribute(material);*/
             osg::ref_ptr<osg::LightModel> lightModel = new osg::LightModel;
             lightModel->setTwoSided(true);
             stateset->setAttributeAndModes(lightModel.get());
@@ -612,7 +603,7 @@ struct CodewordExecution : public Command
 
     virtual void execute ()
     {
-        // incoming! will create theater, and it's called from @main
+        // incoming! will create theater, and it's called from MAIN
         //assert (theater != NULL);
         if (codewords.find (codeword) == codewords.end ())
         {

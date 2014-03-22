@@ -14,11 +14,11 @@ load "cube.obj"
 camouflage "1.png"
 
 mark
-manouver 2 0 0
+  manouver 2 0 0
   lambda 8
 clear
 
 mark
-manouver 10 0 0
+  manouver 10 0 0
   phi 8
 clear
