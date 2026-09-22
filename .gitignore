@@ -5,8 +5,8 @@ lex.yy.*
 y.output
 y.tab.*
 surgical_strike
-out.obj
-out.mtl
+out.osg
+poster.bmp
 *.aux
 *.log
 
